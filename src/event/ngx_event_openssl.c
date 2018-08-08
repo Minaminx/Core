@@ -335,9 +335,10 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
     SSL_CTX_set_options(ssl->ctx, SSL_OP_PRIORITIZE_CHACHA);
 #endif
 
+/// Zero is the default version dedided by boringssl.
 #ifdef TLS1_3_VERSION
-    SSL_CTX_set_min_proto_version(ssl->ctx, 0);
-    SSL_CTX_set_max_proto_version(ssl->ctx, TLS1_3_VERSION);
+    SSL_CTX_set_min_proto_version(ssl->ctx, 0);  /// SSL_CTX_set_min_proto_version(ssl->ctx, TLS1_2_VERSION);
+    SSL_CTX_set_min_proto_version(ssl->ctx, 0);  /// SSL_CTX_set_max_proto_version(ssl->ctx, TLS1_3_VERSION);
 #endif
 
 #ifdef SSL_OP_NO_COMPRESSION
