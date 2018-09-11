@@ -1680,8 +1680,8 @@ ngx_ssl_handle_recv(ngx_connection_t *c, int n)
 
     if (sslerr == SSL_ERROR_WANT_WRITE) {
 
-        ngx_log_error(NGX_LOG_INFO, c->log, 0,
-                      "peer started SSL renegotiation");
+        ngx_log_debug0(NGX_LOG_DEBUG_EVENT, c->log, 0,
+                       "SSL_read: want write");
 
         c->write->ready = 0;
 
@@ -1722,6 +1722,8 @@ ngx_ssl_write_handler(ngx_event_t *wev)
     ngx_connection_t  *c;
 
     c = wev->data;
+
+    ngx_log_debug0(NGX_LOG_DEBUG_EVENT, c->log, 0, "SSL write handler");
 
     c->read->handler(c->read);
 }
@@ -1975,8 +1977,8 @@ ngx_ssl_write(ngx_connection_t *c, u_char *data, size_t size)
 
     if (sslerr == SSL_ERROR_WANT_READ) {
 
-        ngx_log_error(NGX_LOG_INFO, c->log, 0,
-                      "peer started SSL renegotiation");
+        ngx_log_debug0(NGX_LOG_DEBUG_EVENT, c->log, 0,
+                       "SSL_write: want read");
 
         c->read->ready = 0;
 
@@ -2013,6 +2015,8 @@ ngx_ssl_read_handler(ngx_event_t *rev)
     ngx_connection_t  *c;
 
     c = rev->data;
+
+    ngx_log_debug0(NGX_LOG_DEBUG_EVENT, c->log, 0, "SSL read handler");
 
     c->write->handler(c->write);
 }
