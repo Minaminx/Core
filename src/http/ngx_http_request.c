@@ -849,7 +849,8 @@ ngx_http_ssl_servername(ngx_ssl_conn_t *ssl_conn, int *ad, void *arg)
     servername = SSL_get_servername(ssl_conn, TLSEXT_NAMETYPE_host_name);
 
     if (servername == NULL) {
-        return SSL_TLSEXT_ERR_NOACK;
+        /// return SSL_TLSEXT_ERR_NOACK;
+        return SSL_TLSEXT_ERR_ALERT_FATAL;
     }
 
     c = ngx_ssl_get_connection(ssl_conn);
@@ -864,7 +865,8 @@ ngx_http_ssl_servername(ngx_ssl_conn_t *ssl_conn, int *ad, void *arg)
     host.len = ngx_strlen(servername);
 
     if (host.len == 0) {
-        return SSL_TLSEXT_ERR_NOACK;
+        /// return SSL_TLSEXT_ERR_NOACK;
+        return SSL_TLSEXT_ERR_ALERT_FATAL;
     }
 
     host.data = (u_char *) servername;
@@ -884,7 +886,8 @@ ngx_http_ssl_servername(ngx_ssl_conn_t *ssl_conn, int *ad, void *arg)
 
     hc->ssl_servername = ngx_palloc(c->pool, sizeof(ngx_str_t));
     if (hc->ssl_servername == NULL) {
-        return SSL_TLSEXT_ERR_NOACK;
+        /// return SSL_TLSEXT_ERR_NOACK;
+        return SSL_TLSEXT_ERR_ALERT_FATAL;
     }
 
     *hc->ssl_servername = host;
