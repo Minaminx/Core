@@ -10,8 +10,8 @@
 
 
 // Version Update.
-#define nginx_version      2003006002
-#define NGINX_VERSION      "2.3.6.2"
+#define nginx_version      2003006003
+#define NGINX_VERSION      "2.3.6.3"
 #define NGINX_VER          "Minaminx/" NGINX_VERSION
 
 // Release Update.
