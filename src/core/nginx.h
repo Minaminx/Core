@@ -9,9 +9,15 @@
 #define _NGINX_H_INCLUDED_
 
 
+// Version Update.
 #define nginx_version      2003006002
 #define NGINX_VERSION      "2.3.6.2"
 #define NGINX_VER          "Minaminx/" NGINX_VERSION
+
+// Release Update.
+#define release_version    1015005
+#define RELEASE_VERSION    "1.15.5"
+#define RELEASE_VER        "Nginx/" RELEASE_VERSION
 
 #ifdef NGX_BUILD
 #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
