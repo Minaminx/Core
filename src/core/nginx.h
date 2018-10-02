@@ -25,8 +25,8 @@
 #define DECLARED_VER       DECLARED_VAR "/" DECLARED_VERSION
 
 // build version ('nginx -V')
-#define nginx_version      declared_version " (" release_version ")"
-#define NGINX_VERSION      DECLARED_VERSION " (" RELEASE_VERSION ")"
+#define nginx_version      release_version
+#define NGINX_VERSION      RELEASE_VERSION
 #define NGINX_VER          DECLARED_VER " (" RELEASE_VER ")"
 
 #ifdef NGX_BUILD
