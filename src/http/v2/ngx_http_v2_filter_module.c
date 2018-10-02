@@ -197,10 +197,10 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
         "\x8b\x84\x84\x2d\x69\x5b\x05\x44\x3c\x86\xaa\x6f";
 #endif
 
-    static size_t nginx_ver_len = ngx_http_v2_literal_size(NGINX_VER);
+    static size_t nginx_ver_len = ngx_http_v2_literal_size(DECLARED_VER);
 
     static size_t nginx_ver_build_len =
-                                  ngx_http_v2_literal_size(NGINX_VER_BUILD);
+                                  ngx_http_v2_literal_size(DECLARED_VER);
 
     stream = r->stream;
 
@@ -512,11 +512,11 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
     if (r->headers_out.server == NULL) {
 
         if (clcf->server_tokens == NGX_HTTP_SERVER_TOKENS_ON) {
-            pos = ngx_http_v2_write_header_str("server", NGINX_VER);
+            pos = ngx_http_v2_write_header_str("server", DECLARED_VER);
         } else if (clcf->server_tokens == NGX_HTTP_SERVER_TOKENS_BUILD) {
-            pos = ngx_http_v2_write_header_str("server", NGINX_VER_BUILD);
+            pos = ngx_http_v2_write_header_str("server", DECLARED_VER);
         } else {
-            pos = ngx_http_v2_write_header_str("server", "nginx");
+            pos = ngx_http_v2_write_header_str("server", DECLARED_VAR);
         }
     }
 
