@@ -20,8 +20,8 @@
 #define RELEASE_VER        RELEASE_VAR  "/" RELEASE_VERSION
 
 // Version Update (declared)
-#define declared_version   2003007000
-#define DECLARED_VERSION   "2.3.7.0"
+#define declared_version   2003007001
+#define DECLARED_VERSION   "2.3.7.1"
 #define DECLARED_VER       DECLARED_VAR "/" DECLARED_VERSION
 
 // build version ('nginx -V')
@@ -33,8 +33,8 @@
 #define DECLARED_VER_BUILD DECLARED_VER " (" NGX_BUILD ")"
 #define NGINX_VER_BUILD    NGINX_VER    " (" NGX_BUILD ")"
 #else
-#define DECLARED_VER_BUILD DECLARED_VER " (2018.10)"
-#define NGINX_VER_BUILD    NGINX_VER    " (2018.10)"
+#define DECLARED_VER_BUILD DECLARED_VER " (2018.10.3)"
+#define NGINX_VER_BUILD    NGINX_VER    " (2018.10.3)"
 #endif
 
 #define NGX_OLDPID_EXT     ".oldbin"
