@@ -17,13 +17,17 @@ before_install:
   - sudo apt-get -y update
 
 install: 
+  - sudo apt-get install -y wget
   - sudo apt-get install -y build-essential software-properties-common
+  - sudo apt-get install -y libtool autoconf automake
+  - sudo apt-get install -y libssl-dev libcurl4-openssl-dev libperl-dev
+  - sudo apt-get install -y zlib1g-dev libbz2-dev libreadline-dev
+  - sudo apt-get install -y cmake clang golang
   - sudo apt-get install -y gcc-snapshot
   - sudo apt-get install -y gcc-8 g++-8
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 60 --slave /usr/bin/g++ g++ /usr/bin/g++-8
   - sudo update-alternatives --config gcc
   - sudo gcc -v
-  - sudo apt-get install -y wget openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev cmake golang
 
 before_script: 
   - wget https://raw.githubusercontent.com/Minaminx/Component/master/dependence/pcre-8.42.tar.gz && tar -zxf pcre-8.42.tar.gz
@@ -33,7 +37,7 @@ before_script:
   - chmod -R +x pcre-8.42 zlib-cloudflare nginx boringssl
 
 script: 
-  - cd pcre-8.42 && ./configure && cd ..
+  - cd pcre-8.42 && ./configure --enable-pcregrep-libz --enable-pcregrep-libbz2 --enable-pcretest-libreadline --enable-utf8 --enable-unicode-properties --enable-pcre16 --enable-pcre32 --enable-jit && cd ..
   - cd zlib-cloudflare && ./configure && cd ..
   - cd boringssl && mkdir build && cd build && export CFLAGS="-Wno-error" && cmake -DCMAKE_BUILD_TYPE=Release -DOPENSSL_SMALL=1 ../ && make && cd .. && mkdir -p .openssl/lib && cd .openssl && ln -s ../include . && cd .. && cp build/crypto/libcrypto.a build/ssl/libssl.a .openssl/lib
   - cd ..
