@@ -364,6 +364,8 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
 #if (NGX_HTTP_SSL_BORINGSSL_TLS_VERSION_MAX)
     #ifdef TLS1_3_VERSION
         SSL_CTX_set_max_proto_version(ssl->ctx, TLS1_3_VERSION);
+    #else
+        SSL_CTX_set_max_proto_version(ssl->ctx, TLS1_2_VERSION);
     #endif
 #else
     SSL_CTX_set_max_proto_version(ssl->ctx, 0);
