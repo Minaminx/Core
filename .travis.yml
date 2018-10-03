@@ -26,20 +26,18 @@ install:
   - sudo apt-get install -y wget openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev cmake golang
 
 before_script: 
-  - wget https://raw.githubusercontent.com/Minaminx/Component/master/dependence/pcre-8.42.tar.gz && tar -zxf pcre-8.42.tar.gz && cd pcre-8.42 && ./configure && cd ..
-  - git clone --depth=1 https://github.com/nanqinlang-fork-web-nginx/zlib-cloudflare.git && cd zlib-cloudflare && ./configure && cd ..
+  - wget https://raw.githubusercontent.com/Minaminx/Component/master/dependence/pcre-8.42.tar.gz && tar -zxf pcre-8.42.tar.gz
+  - git clone --depth=1 https://github.com/nanqinlang-fork-web-nginx/zlib-cloudflare.git
   - git clone --depth=1 --branch=master https://github.com/Minaminx/Core.git nginx
   - git clone --depth=1 --branch=master https://github.com/Minaminx/BoringSSL.git boringssl
-  - chmod -R +x nginx boringssl
+  - chmod -R +x pcre-8.42 zlib-cloudflare nginx boringssl
 
 script: 
+  - cd pcre-8.42 && ./configure && cd ..
+  - cd zlib-cloudflare && ./configure && cd ..
   - cd boringssl && mkdir build && cd build && export CFLAGS="-Wno-error" && cmake -DCMAKE_BUILD_TYPE=Release -DOPENSSL_SMALL=1 ../ && make && cd .. && mkdir -p .openssl/lib && cd .openssl && ln -s ../include . && cd .. && cp build/crypto/libcrypto.a build/ssl/libssl.a .openssl/lib
   - cd ..
-  - cd nginx
-  - export rootdir="/home/travis/build/Minaminx/Core"
-  - ./configure --builddir=$rootdir/nginx/travis/builder --prefix=$rootdir/nginx/travis/installer --with-http_ssl_module --with-http_ssl_openssl_chacha_preferred_module --with-http_ssl_boringssl_tls_version_min_module --with-http_ssl_boringssl_tls_version_max_module --with-http_v2_spdy_module --with-http_v2_module --with-http_v2_hpack_enc_module --with-openssl=$rootdir/boringssl --with-pcre=$rootdir/pcre-8.42 --with-pcre-jit --with-zlib=$rootdir/zlib-cloudflare
-  - sudo make
-  - sudo make install
+  - cd nginx && export rootdir="/home/travis/build/Minaminx/Core" && ./configure --builddir=$rootdir/nginx/travis/builder --prefix=$rootdir/nginx/travis/installer --with-http_ssl_module --with-http_ssl_openssl_chacha_preferred_module --with-http_ssl_boringssl_tls_version_min_module --with-http_ssl_boringssl_tls_version_max_module --with-http_v2_spdy_module --with-http_v2_module --with-http_v2_hpack_enc_module --with-openssl=$rootdir/boringssl --with-pcre=$rootdir/pcre-8.42 --with-pcre-jit --with-zlib=$rootdir/zlib-cloudflare && sudo make && sudo make install
 
 after_success: 
   - sudo $rootdir/nginx/travis/installer/sbin/nginx -V
