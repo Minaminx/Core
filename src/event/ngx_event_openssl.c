@@ -345,6 +345,7 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
     }
 #endif
 
+/// You can set CHACHA20 priority in nginx without patching OpenSSL.
 #ifdef SSL_OP_PRIORITIZE_CHACHA
     SSL_CTX_set_options(ssl->ctx, SSL_OP_PRIORITIZE_CHACHA);
 #endif
