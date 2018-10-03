@@ -356,6 +356,11 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
     SSL_CTX_set_min_proto_version(ssl->ctx, 0);  /// SSL_CTX_set_max_proto_version(ssl->ctx, TLS1_3_VERSION);
 #endif
 
+/// nginx_openssl-1.1.x_renegotiation_bugfix.patch
+#ifdef SSL_OP_NO_RENEGOTIATION
+    SSL_CTX_set_options(ssl->ctx, SSL_OP_NO_RENEGOTIATION);
+#endif
+
 #ifdef SSL_OP_NO_COMPRESSION
     SSL_CTX_set_options(ssl->ctx, SSL_OP_NO_COMPRESSION);
 #endif
@@ -1291,9 +1296,9 @@ ngx_ssl_create_connection(ngx_ssl_t *ssl, ngx_connection_t *c, ngx_uint_t flags)
     } else {
         SSL_set_accept_state(sc->connection);
 
-#ifdef SSL_OP_NO_RENEGOTIATION
-        SSL_set_options(sc->connection, SSL_OP_NO_RENEGOTIATION);
-#endif
+/// #ifdef SSL_OP_NO_RENEGOTIATION
+///         SSL_set_options(sc->connection, SSL_OP_NO_RENEGOTIATION);
+/// #endif
     }
 
     if (SSL_set_ex_data(sc->connection, ngx_ssl_connection_index, c) == 0) {
