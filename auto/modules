@@ -415,7 +415,6 @@ if [ $HTTP = YES ]; then
         . auto/module
     fi
 
-
     ngx_module_type=HTTP
 
     if [ $HTTP_V2 = YES ]; then
@@ -700,6 +699,10 @@ if [ $HTTP = YES ]; then
         ngx_module_link=$HTTP_SSL
 
         . auto/module
+    fi
+
+    if [ $HTTP_SSL_OPENSSL_CHACHA_PREFERRED = YES ]; then
+        have=NGX_HTTP_SSL_OPENSSL_CHACHA_PREFERRED . auto/have
     fi
 
     if [ $HTTP_PROXY = YES ]; then
