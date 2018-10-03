@@ -48,7 +48,7 @@ ngx_module_t  ngx_http_header_filter_module = {
 
 static u_char ngx_http_server_string[] = "Server: " DECLARED_VAR CRLF;
 static u_char ngx_http_server_full_string[] = "Server: " DECLARED_VER CRLF;
-static u_char ngx_http_server_build_string[] = "Server: " DECLARED_VER CRLF;
+static u_char ngx_http_server_build_string[] = "Server: " DECLARED_VER_BUILD CRLF;
 
 
 static ngx_str_t ngx_http_status_lines[] = {

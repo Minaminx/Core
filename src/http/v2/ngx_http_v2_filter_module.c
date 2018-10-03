@@ -200,7 +200,7 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
     static size_t nginx_ver_len = ngx_http_v2_literal_size(DECLARED_VER);
 
     static size_t nginx_ver_build_len =
-                                  ngx_http_v2_literal_size(DECLARED_VER);
+                                  ngx_http_v2_literal_size(DECLARED_VER_BUILD);
 
     stream = r->stream;
 
@@ -514,7 +514,7 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
         if (clcf->server_tokens == NGX_HTTP_SERVER_TOKENS_ON) {
             pos = ngx_http_v2_write_header_str("server", DECLARED_VER);
         } else if (clcf->server_tokens == NGX_HTTP_SERVER_TOKENS_BUILD) {
-            pos = ngx_http_v2_write_header_str("server", DECLARED_VER);
+            pos = ngx_http_v2_write_header_str("server", DECLARED_VER_BUILD);
         } else {
             pos = ngx_http_v2_write_header_str("server", DECLARED_VAR);
         }

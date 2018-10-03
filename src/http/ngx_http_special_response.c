@@ -26,7 +26,7 @@ static u_char ngx_http_error_full_tail[] =
 
 
 static u_char ngx_http_error_build_tail[] =
-"<hr><center>" DECLARED_VER "</center>" CRLF
+"<hr><center>" DECLARED_VER_BUILD "</center>" CRLF
 "</body>" CRLF
 "</html>" CRLF
 ;
