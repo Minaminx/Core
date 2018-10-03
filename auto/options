@@ -59,6 +59,7 @@ HTTP_CHARSET=YES
 HTTP_GZIP=YES
 HTTP_SSL=NO
 HTTP_SSL_OPENSSL_CHACHA_PREFERRED=NO
+HTTP_V2_SPDY=NO
 HTTP_V2=NO
 HTTP_V2_HPACK_ENC=NO
 HTTP_SSI=YES
@@ -227,6 +228,7 @@ $0: warning: the \"--with-ipv6\" option is deprecated"
 
         --with-http_ssl_module)          HTTP_SSL=YES               ;;
         --with-http_ssl_openssl_chacha_preferred_module) HTTP_SSL_OPENSSL_CHACHA_PREFERRED=YES ;;
+        --with-http_v2_spdy_module)      HTTP_V2_SPDY=YES           ;;
         --with-http_v2_module)           HTTP_V2=YES                ;;
         --with-http_v2_hpack_enc_module) HTTP_V2_HPACK_ENC=YES      ;;
         --with-http_realip_module)       HTTP_REALIP=YES            ;;
@@ -444,6 +446,7 @@ cat << END
 
   --with-http_ssl_module             enable ngx_http_ssl_module
   --with-http_ssl_openssl_chacha_preferred_module  enable ngx_http_ssl_openssl_chacha_preferred_module
+  --with-http_v2_spdy_module         enable ngx_http_v2_spdy_module
   --with-http_v2_module              enable ngx_http_v2_module
   --with-http_v2_hpack_enc_module    enable ngx_http_v2_hpack_enc_module
   --with-http_realip_module          enable ngx_http_realip_module
