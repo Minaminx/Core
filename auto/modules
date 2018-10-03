@@ -224,7 +224,7 @@ if [ $HTTP = YES ]; then
         ngx_module_name=ngx_http_spdy_filter_module
         ngx_module_incs=
         ngx_module_deps=
-        ngx_module_srcs=src/http/v2_spdy/ngx_http_spdy_filter_module.c
+        ngx_module_srcs=src/http/ngx_http_spdy_filter_module.c
         ngx_module_libs=
         ngx_module_link=$HTTP_V2_SPDY
         . auto/module
@@ -434,9 +434,9 @@ if [ $HTTP = YES ]; then
     if [ $HTTP_V2_SPDY = YES ]; then
         have=NGX_HTTP_V2_SPDY . auto/have
         ngx_module_name=ngx_http_spdy_module
-        ngx_module_incs=src/http/v2_spdy
-        ngx_module_deps="src/http/v2_spdy/ngx_http_spdy.h  src/http/v2_spdy/ngx_http_spdy_module.h"
-        ngx_module_srcs="src/http/v2_spdy/ngx_http_spdy.c  src/http/v2_spdy/ngx_http_spdy_module.c"
+        ngx_module_incs=src/http
+        ngx_module_deps="src/http/ngx_http_spdy.h  src/http/ngx_http_spdy_module.h"
+        ngx_module_srcs="src/http/ngx_http_spdy.c  src/http/ngx_http_spdy_module.c"
         ngx_module_libs=
         ngx_module_link=$HTTP_V2_SPDY
         . auto/module
