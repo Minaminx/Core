@@ -20,8 +20,8 @@
 #define RELEASE_VER        RELEASE_VAR  "/" RELEASE_VERSION
 
 // Version Update (declared)
-#define declared_version   2003007001
-#define DECLARED_VERSION   "2.3.7.1"
+#define declared_version   2003007002
+#define DECLARED_VERSION   "2.3.7.2"
 #define DECLARED_VER       DECLARED_VAR "/" DECLARED_VERSION
 
 // build version ('nginx -V')
