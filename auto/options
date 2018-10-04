@@ -59,7 +59,7 @@ HTTP_CHARSET=YES
 HTTP_GZIP=YES
 HTTP_SSL=NO
 HTTP_SSL_OPENSSL_CHACHA_PREFERRED=NO
-HTTP_SSL_WITH_BORINGSSL=NO
+HTTP_SSL_BORINGSSL_ON=NO
 HTTP_SSL_BORINGSSL_TLS_VERSION_MIN=NO
 HTTP_SSL_BORINGSSL_TLS_VERSION_MAX=NO
 HTTP_V2_SPDY=NO
@@ -232,12 +232,7 @@ $0: warning: the \"--with-ipv6\" option is deprecated"
         --with-http_ssl_module)          HTTP_SSL=YES               ;;
         --with-http_ssl_openssl_chacha_preferred_module)
                                          HTTP_SSL_OPENSSL_CHACHA_PREFERRED=YES  ;;
-        --with-http_ssl_with_boringssl)
-                                         HTTP_SSL_WITH_BORINGSSL=YES            ;;
-        --with-http_ssl_boringssl_tls_version_min_module)
-                                         HTTP_SSL_BORINGSSL_TLS_VERSION_MIN=YES ;;
-        --with-http_ssl_boringssl_tls_version_max_module)
-                                         HTTP_SSL_BORINGSSL_TLS_VERSION_MAX=YES ;;
+
         --with-http_v2_spdy_module)      HTTP_V2_SPDY=YES           ;;
         --with-http_v2_module)           HTTP_V2=YES                ;;
         --with-http_v2_hpack_enc_module) HTTP_V2_HPACK_ENC=YES      ;;
@@ -374,6 +369,12 @@ use the \"--with-mail_ssl_module\" option instead"
         --with-openssl=*)                OPENSSL="$value"           ;;
         --with-openssl-opt=*)            OPENSSL_OPT="$value"       ;;
 
+        ## use --with-boringssl-dir=* to replace --with-openssl=* .
+        --with-boringssl-dir=*)          OPENSSL="$value"           ;;
+        --with-boringssl-on)             HTTP_SSL_BORINGSSL_ON=YES  ;;
+        --with-boringssl-tls-min)        HTTP_SSL_BORINGSSL_TLS_VERSION_MIN=YES ;;
+        --with-boringssl-tls-max)        HTTP_SSL_BORINGSSL_TLS_VERSION_MAX=YES ;;
+
         --with-md5=*)
             NGX_POST_CONF_MSG="$NGX_POST_CONF_MSG
 $0: warning: the \"--with-md5\" option is deprecated"
@@ -457,11 +458,11 @@ cat << END
   --with-http_ssl_module             enable ngx_http_ssl_module
   --with-http_ssl_openssl_chacha_preferred_module
                                      enable ngx_http_ssl_openssl_chacha_preferred_module
-  --with-http_ssl_with_boringssl
+  --with-boringssl-on
                                      enable boringssl
-  --with-http_ssl_boringssl_tls_version_min_module
+  --with-boringssl-tls-min
                                      enable ngx_http_ssl_boringssl_tls_version_min_module
-  --with-http_ssl_boringssl_tls_version_max_module
+  --with-boringssl-tls-max
                                      enable ngx_http_ssl_boringssl_tls_version_max_module
   --with-http_v2_spdy_module         enable ngx_http_v2_spdy_module
   --with-http_v2_module              enable ngx_http_v2_module

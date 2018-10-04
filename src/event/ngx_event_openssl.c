@@ -345,7 +345,7 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
     }
 #endif
 
-#if (NGX_HTTP_SSL_WITH_BORINGSSL)
+#if (NGX_HTTP_SSL_BORINGSSL_ON)
     /// Zero is the default version dedided by boringssl.
     /// --with-http_ssl_boringssl_tls_version_min_module
     #if (NGX_HTTP_SSL_BORINGSSL_TLS_VERSION_MIN)
