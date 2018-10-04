@@ -374,8 +374,7 @@ use the \"--with-mail_ssl_module\" option instead"
         --with-openssl=*)                OPENSSL="$value"           ;;
         --with-openssl-opt=*)            OPENSSL_OPT="$value"       ;;
 
-        --with-boringssl-dir=*)          OPENSSL="$value"                   ;;
-        --with-boringssl-on)             BORINGSSL_ON=YES                   ;;
+        --with-boringssl=*)              OPENSSL="$value"                   ;;
         --with-boringssl-tls-min=*)      BORINGSSL_TLS_VERSION_MIN="$value" ;;
         --with-boringssl-tls-max=*)      BORINGSSL_TLS_VERSION_MAX="$value" ;;
 
@@ -463,8 +462,7 @@ cat << END
   --with-http_ssl_openssl_chacha_preferred_module
                                      enable ngx_http_ssl_openssl_chacha_preferred_module
 
-  --with-boringssl-dir=              enable boringssl dir
-  --with-boringssl-on                enable boringssl build
+  --with-boringssl=                  enable boringssl's dir
   --with-boringssl-tls-min=          enable ngx_http_ssl_boringssl_tls_version_min_module
   --with-boringssl-tls-max=          enable ngx_http_ssl_boringssl_tls_version_max_module
 

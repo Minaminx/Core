@@ -730,7 +730,7 @@ if [ $HTTP = YES ]; then
         have=NGX_HTTP_SSL_OPENSSL_CHACHA_PREFERRED . auto/have
     fi
 
-    if [ ! -n $OPENSSL || $BORINGSSL_ON = YES ]; then
+    if [ ! -n $OPENSSL ]; then
         have=NGX_BORINGSSL_ON . auto/have
     fi
 
