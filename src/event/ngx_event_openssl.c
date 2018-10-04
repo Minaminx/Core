@@ -361,7 +361,7 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
             SSL_CTX_set_max_proto_version(ssl->ctx, TLS1_3_VERSION);
         #else
             /// to make a error.
-            SSL_CTX_set_max_proto_version(ssl->ctx, 0);
+            SSL_CTX_set_max_proto_version(ssl->ctx, TLS1_4_VERSION);
         #endif
     } else {
         SSL_CTX_set_max_proto_version(ssl->ctx, NGX_BORINGSSL_TLS_VERSION_MAX);
