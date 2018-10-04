@@ -66,6 +66,7 @@ OPENSSL_CHACHA_PREFERRED=NO
 BORINGSSL=NO
 BORINGSSL_TLS_VERSION_MIN=NO
 BORINGSSL_TLS_VERSION_MAX=NO
+BORINGSSL_OCSP_STAPLING=NO
 
 HTTP_V2_SPDY=NO
 HTTP_V2=NO
@@ -380,6 +381,7 @@ use the \"--with-mail_ssl_module\" option instead"
         --with-boringssl=*)              BORINGSSL=YES OPENSSL="$value"     ;;
         --with-boringssl-tls-min=*)      BORINGSSL_TLS_VERSION_MIN="$value" ;;
         --with-boringssl-tls-max=*)      BORINGSSL_TLS_VERSION_MAX="$value" ;;
+        --with-boringssl-ocsp-stapling)  BORINGSSL_OCSP_STAPLING=YES        ;;
 
         --with-md5=*)
             NGX_POST_CONF_MSG="$NGX_POST_CONF_MSG
@@ -469,6 +471,7 @@ cat << END
   --with-boringssl=                  enable boringssl and its dir
   --with-boringssl-tls-min=          enable ngx_http_ssl_boringssl_tls_version_min_module
   --with-boringssl-tls-max=          enable ngx_http_ssl_boringssl_tls_version_max_module
+  --with-boringssl-ocsp-stapling     enable ngx_http_ssl_boringssl_ocsp_stapling_module
 
   --with-http_v2_spdy_module         enable ngx_http_v2_spdy_module
   --with-http_v2_module              enable ngx_http_v2_module
