@@ -9,10 +9,12 @@
 #define _NGINX_H_INCLUDED_
 
 
+#define NGX_OLDPID_EXT     ".oldbin"
+
 // var NAME
 #define RELEASE_VAR        "Nginx"
 #define DECLARED_VAR       "Minaminx"
-#define NGINX_VAR          DECLARED_VAR
+#define NGINX_VAR          "Nginx"
 
 // Release Update (official)
 #define release_version    1015005
@@ -25,8 +27,8 @@
 #define DECLARED_VER       DECLARED_VAR "/" DECLARED_VERSION
 
 // build version ('nginx -V')
-#define nginx_version      declared_version
-#define NGINX_VERSION      DECLARED_VERSION
+#define nginx_version      release_version
+#define NGINX_VERSION      RELEASE_VERSION
 #define NGINX_VER          DECLARED_VER " (" RELEASE_VER ")"
 
 #ifdef NGX_BUILD
@@ -36,8 +38,6 @@
 #define DECLARED_VER_BUILD DECLARED_VER " (2018.10.5)"
 #define NGINX_VER_BUILD    NGINX_VER    " (2018.10.5)"
 #endif
-
-#define NGX_OLDPID_EXT     ".oldbin"
 
 
 #endif /* _NGINX_H_INCLUDED_ */
