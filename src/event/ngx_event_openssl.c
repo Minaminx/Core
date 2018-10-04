@@ -345,40 +345,36 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
     }
 #endif
 
-#if (NGX_BORINGSSL_ON)
-    /// Zero is the default version dedided by boringssl.
-    /// --with-boringssl-tls-min=TLS1_2_VERSION
-    #ifdef NGX_BORINGSSL_TLS_VERSION_MIN
-        SSL_CTX_set_min_proto_version(ssl->ctx, NGX_BORINGSSL_TLS_VERSION_MIN);
-    #else
-        SSL_CTX_set_min_proto_version(ssl->ctx, 0);
-    #endif
-
-    /// Zero is the default version dedided by boringssl.
-    /// --with-boringssl-tls-max=TLS1_3_VERSION
-    #ifdef NGX_BORINGSSL_TLS_VERSION_MAX
-        if (NGX_BORINGSSL_TLS_VERSION_MAX == "TLS1_3_VERSION") {
-            #ifdef TLS1_3_VERSION
-                SSL_CTX_set_max_proto_version(ssl->ctx, TLS1_3_VERSION);
-            #else
-                /// to make a error.
-                SSL_CTX_set_max_proto_version(ssl->ctx, 0);
-            #endif
-        } else {
-            SSL_CTX_set_max_proto_version(ssl->ctx, NGX_BORINGSSL_TLS_VERSION_MAX);
-        }
-    #else
-        SSL_CTX_set_max_proto_version(ssl->ctx, 0);
-    #endif
+/// Zero is the default version dedided by boringssl.
+/// --with-boringssl-tls-min=TLS1_2_VERSION
+#ifdef NGX_BORINGSSL_TLS_VERSION_MIN
+    SSL_CTX_set_min_proto_version(ssl->ctx, NGX_BORINGSSL_TLS_VERSION_MIN);
+#else
+    SSL_CTX_set_min_proto_version(ssl->ctx, 0);
 #endif
 
-#if (NGX_OPENSSL_ON)
-    /// You can set CHACHA20 priority in nginx without patching OpenSSL.
-    /// --with-openssl-chacha-preferred
-    #if (NGX_OPENSSL_CHACHA_PREFERRED)
-        #ifdef SSL_OP_PRIORITIZE_CHACHA
-            SSL_CTX_set_options(ssl->ctx, SSL_OP_PRIORITIZE_CHACHA);
+/// Zero is the default version dedided by boringssl.
+/// --with-boringssl-tls-max=TLS1_3_VERSION
+#ifdef NGX_BORINGSSL_TLS_VERSION_MAX
+    if (NGX_BORINGSSL_TLS_VERSION_MAX == "TLS1_3_VERSION") {
+        #ifdef TLS1_3_VERSION
+            SSL_CTX_set_max_proto_version(ssl->ctx, TLS1_3_VERSION);
+        #else
+            /// to make a error.
+            SSL_CTX_set_max_proto_version(ssl->ctx, 0);
         #endif
+    } else {
+        SSL_CTX_set_max_proto_version(ssl->ctx, NGX_BORINGSSL_TLS_VERSION_MAX);
+    }
+#else
+    SSL_CTX_set_max_proto_version(ssl->ctx, 0);
+#endif
+
+/// You can set CHACHA20 priority in nginx without patching OpenSSL.
+/// --with-openssl-chacha-preferred
+#if (NGX_OPENSSL_CHACHA_PREFERRED)
+    #ifdef SSL_OP_PRIORITIZE_CHACHA
+        SSL_CTX_set_options(ssl->ctx, SSL_OP_PRIORITIZE_CHACHA);
     #endif
 #endif
 
