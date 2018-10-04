@@ -730,16 +730,16 @@ if [ $HTTP = YES ]; then
         have=NGX_HTTP_SSL_OPENSSL_CHACHA_PREFERRED . auto/have
     fi
 
-    if [ $HTTP_SSL_BORINGSSL_ON = YES ]; then
-        have=NGX_HTTP_SSL_BORINGSSL_ON . auto/have
+    if [ ! -n $OPENSSL || $BORINGSSL_ON = YES ]; then
+        have=NGX_BORINGSSL_ON . auto/have
     fi
 
-    if [ $HTTP_SSL_BORINGSSL_TLS_VERSION_MIN = YES ]; then
-        have=NGX_HTTP_SSL_BORINGSSL_TLS_VERSION_MIN . auto/have
+    if [ ! -n $BORINGSSL_TLS_VERSION_MIN ]; then
+        have=NGX_BORINGSSL_TLS_VERSION_MIN value=$BORINGSSL_TLS_VERSION_MIN . auto/define
     fi
 
-    if [ $HTTP_SSL_BORINGSSL_TLS_VERSION_MAX = YES ]; then
-        have=NGX_HTTP_SSL_BORINGSSL_TLS_VERSION_MAX . auto/have
+    if [ ! -n $BORINGSSL_TLS_VERSION_MAX ]; then
+        have=NGX_BORINGSSL_TLS_VERSION_MAX value=$BORINGSSL_TLS_VERSION_MAX . auto/define
     fi
 
     if [ $HTTP_PROXY = YES ]; then

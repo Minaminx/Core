@@ -57,14 +57,18 @@ NGX_HTTP_SCGI_TEMP_PATH=
 HTTP_CACHE=YES
 HTTP_CHARSET=YES
 HTTP_GZIP=YES
+
 HTTP_SSL=NO
 HTTP_SSL_OPENSSL_CHACHA_PREFERRED=NO
-HTTP_SSL_BORINGSSL_ON=NO
-HTTP_SSL_BORINGSSL_TLS_VERSION_MIN=NO
-HTTP_SSL_BORINGSSL_TLS_VERSION_MAX=NO
+
+BORINGSSL_ON=NO
+BORINGSSL_TLS_VERSION_MIN=
+BORINGSSL_TLS_VERSION_MAX=
+
 HTTP_V2_SPDY=NO
 HTTP_V2=NO
 HTTP_V2_HPACK_ENC=NO
+
 HTTP_SSI=YES
 HTTP_POSTPONE=NO
 HTTP_REALIP=NO
@@ -105,6 +109,7 @@ HTTP_FLV=NO
 HTTP_MP4=NO
 HTTP_GUNZIP=NO
 HTTP_GZIP_STATIC=NO
+
 HTTP_UPSTREAM_HASH=YES
 HTTP_UPSTREAM_IP_HASH=YES
 HTTP_UPSTREAM_LEAST_CONN=YES
@@ -369,11 +374,10 @@ use the \"--with-mail_ssl_module\" option instead"
         --with-openssl=*)                OPENSSL="$value"           ;;
         --with-openssl-opt=*)            OPENSSL_OPT="$value"       ;;
 
-        ## use --with-boringssl-dir=* to replace --with-openssl=* .
-        --with-boringssl-dir=*)          OPENSSL="$value"           ;;
-        --with-boringssl-on)             HTTP_SSL_BORINGSSL_ON=YES  ;;
-        --with-boringssl-tls-min)        HTTP_SSL_BORINGSSL_TLS_VERSION_MIN=YES ;;
-        --with-boringssl-tls-max)        HTTP_SSL_BORINGSSL_TLS_VERSION_MAX=YES ;;
+        --with-boringssl-dir=*)          OPENSSL="$value"                   ;;
+        --with-boringssl-on)             BORINGSSL_ON=YES                   ;;
+        --with-boringssl-tls-min=*)      BORINGSSL_TLS_VERSION_MIN="$value" ;;
+        --with-boringssl-tls-max=*)      BORINGSSL_TLS_VERSION_MAX="$value" ;;
 
         --with-md5=*)
             NGX_POST_CONF_MSG="$NGX_POST_CONF_MSG
@@ -459,9 +463,10 @@ cat << END
   --with-http_ssl_openssl_chacha_preferred_module
                                      enable ngx_http_ssl_openssl_chacha_preferred_module
 
+  --with-boringssl-dir=              enable boringssl dir
   --with-boringssl-on                enable boringssl build
-  --with-boringssl-tls-min           enable ngx_http_ssl_boringssl_tls_version_min_module
-  --with-boringssl-tls-max           enable ngx_http_ssl_boringssl_tls_version_max_module
+  --with-boringssl-tls-min=          enable ngx_http_ssl_boringssl_tls_version_min_module
+  --with-boringssl-tls-max=          enable ngx_http_ssl_boringssl_tls_version_max_module
 
   --with-http_v2_spdy_module         enable ngx_http_v2_spdy_module
   --with-http_v2_module              enable ngx_http_v2_module
