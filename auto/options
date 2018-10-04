@@ -59,6 +59,7 @@ HTTP_CHARSET=YES
 HTTP_GZIP=YES
 HTTP_SSL=NO
 HTTP_SSL_OPENSSL_CHACHA_PREFERRED=NO
+HTTP_SSL_WITH_BORINGSSL=NO
 HTTP_SSL_BORINGSSL_TLS_VERSION_MIN=NO
 HTTP_SSL_BORINGSSL_TLS_VERSION_MAX=NO
 HTTP_V2_SPDY=NO
@@ -231,6 +232,8 @@ $0: warning: the \"--with-ipv6\" option is deprecated"
         --with-http_ssl_module)          HTTP_SSL=YES               ;;
         --with-http_ssl_openssl_chacha_preferred_module)
                                          HTTP_SSL_OPENSSL_CHACHA_PREFERRED=YES  ;;
+        --with-http_ssl_with_boringssl)
+                                         HTTP_SSL_WITH_BORINGSSL=YES            ;;
         --with-http_ssl_boringssl_tls_version_min_module)
                                          HTTP_SSL_BORINGSSL_TLS_VERSION_MIN=YES ;;
         --with-http_ssl_boringssl_tls_version_max_module)
@@ -454,6 +457,8 @@ cat << END
   --with-http_ssl_module             enable ngx_http_ssl_module
   --with-http_ssl_openssl_chacha_preferred_module
                                      enable ngx_http_ssl_openssl_chacha_preferred_module
+  --with-http_ssl_with_boringssl
+                                     enable boringssl
   --with-http_ssl_boringssl_tls_version_min_module
                                      enable ngx_http_ssl_boringssl_tls_version_min_module
   --with-http_ssl_boringssl_tls_version_max_module

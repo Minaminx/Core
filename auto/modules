@@ -730,6 +730,10 @@ if [ $HTTP = YES ]; then
         have=NGX_HTTP_SSL_OPENSSL_CHACHA_PREFERRED . auto/have
     fi
 
+    if [ $HTTP_SSL_WITH_BORINGSSL = YES ]; then
+        have=NGX_HTTP_SSL_WITH_BORINGSSL . auto/have
+    fi
+
     if [ $HTTP_SSL_BORINGSSL_TLS_VERSION_MIN = YES ]; then
         have=NGX_HTTP_SSL_BORINGSSL_TLS_VERSION_MIN . auto/have
     fi
