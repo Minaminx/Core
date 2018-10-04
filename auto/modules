@@ -730,6 +730,10 @@ if [ $HTTP = YES ]; then
         have=NGX_HTTP_SSL_STRICT_SNI . auto/have
     fi
 
+    if [ $HTTP_SSL_BITMASK_TLS13 = YES ]; then
+        have=NGX_HTTP_SSL_BITMASK_TLS13 . auto/have
+    fi
+
     if [ $BORINGSSL = YES ]; then
         if [ $BORINGSSL_TLS_VERSION_MIN != NO ]; then
             have=NGX_BORINGSSL_TLS_VERSION_MIN value=$BORINGSSL_TLS_VERSION_MIN . auto/define
