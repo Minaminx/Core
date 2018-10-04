@@ -458,12 +458,11 @@ cat << END
   --with-http_ssl_module             enable ngx_http_ssl_module
   --with-http_ssl_openssl_chacha_preferred_module
                                      enable ngx_http_ssl_openssl_chacha_preferred_module
-  --with-boringssl-on
-                                     enable boringssl
-  --with-boringssl-tls-min
-                                     enable ngx_http_ssl_boringssl_tls_version_min_module
-  --with-boringssl-tls-max
-                                     enable ngx_http_ssl_boringssl_tls_version_max_module
+
+  --with-boringssl-on                enable boringssl build
+  --with-boringssl-tls-min           enable ngx_http_ssl_boringssl_tls_version_min_module
+  --with-boringssl-tls-max           enable ngx_http_ssl_boringssl_tls_version_max_module
+
   --with-http_v2_spdy_module         enable ngx_http_v2_spdy_module
   --with-http_v2_module              enable ngx_http_v2_module
   --with-http_v2_hpack_enc_module    enable ngx_http_v2_hpack_enc_module
