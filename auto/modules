@@ -727,10 +727,10 @@ if [ $HTTP = YES ]; then
     fi
 
     if [ $BORINGSSL = YES ]; then
-        if [ ! -n $BORINGSSL_TLS_VERSION_MIN ]; then
+        if [ $BORINGSSL_TLS_VERSION_MIN != NO ]; then
             have=NGX_BORINGSSL_TLS_VERSION_MIN value=$BORINGSSL_TLS_VERSION_MIN . auto/define
         fi
-        if [ ! -n $BORINGSSL_TLS_VERSION_MAX ]; then
+        if [ $BORINGSSL_TLS_VERSION_MAX != NO ]; then
             have=NGX_BORINGSSL_TLS_VERSION_MAX value=$BORINGSSL_TLS_VERSION_MAX . auto/define
         fi
     else
