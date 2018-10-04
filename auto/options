@@ -59,6 +59,7 @@ HTTP_CHARSET=YES
 HTTP_GZIP=YES
 
 HTTP_SSL=NO
+HTTP_SSL_STRICT_SNI=NO
 
 OPENSSL_CHACHA_PREFERRED=NO
 
@@ -236,6 +237,7 @@ $0: warning: the \"--with-ipv6\" option is deprecated"
         --http-scgi-temp-path=*)         NGX_HTTP_SCGI_TEMP_PATH="$value"    ;;
 
         --with-http_ssl_module)          HTTP_SSL=YES               ;;
+        --with-http_ssl_strict_sni)      HTTP_SSL_STRICT_SNI=YES    ;;
 
         --with-http_v2_spdy_module)      HTTP_V2_SPDY=YES           ;;
         --with-http_v2_module)           HTTP_V2=YES                ;;
@@ -460,6 +462,7 @@ cat << END
   --with-file-aio                    enable file AIO support
 
   --with-http_ssl_module             enable ngx_http_ssl_module
+  --with-http_ssl_strict_sni         enable http_ssl_strict_sni_module
 
   --with-openssl-chacha-preferred    enable ngx_http_ssl_openssl_chacha_preferred_module
 
