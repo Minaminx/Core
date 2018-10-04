@@ -347,16 +347,16 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
 
 /// Zero is the default version dedided by boringssl.
 /// --with-boringssl-tls-min=TLS1_2_VERSION
-#ifdef BORINGSSL_TLS_VERSION_MIN
-    SSL_CTX_set_min_proto_version(ssl->ctx, BORINGSSL_TLS_VERSION_MIN);
+#ifdef NGX_BORINGSSL_TLS_VERSION_MIN
+    SSL_CTX_set_min_proto_version(ssl->ctx, NGX_BORINGSSL_TLS_VERSION_MIN);
 #else
     SSL_CTX_set_min_proto_version(ssl->ctx, 0);
 #endif
 
 /// Zero is the default version dedided by boringssl.
 /// --with-boringssl-tls-max=TLS1_3_VERSION
-#ifdef BORINGSSL_TLS_VERSION_MAX
-    if (BORINGSSL_TLS_VERSION_MAX == "TLS1_3_VERSION") {
+#ifdef NGX_BORINGSSL_TLS_VERSION_MAX
+    if (NGX_BORINGSSL_TLS_VERSION_MAX == "TLS1_3_VERSION") {
         #ifdef TLS1_3_VERSION
             SSL_CTX_set_max_proto_version(ssl->ctx, TLS1_3_VERSION);
         #else
@@ -364,7 +364,7 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
             SSL_CTX_set_max_proto_version(ssl->ctx, 0);
         #endif
     } else {
-        SSL_CTX_set_max_proto_version(ssl->ctx, BORINGSSL_TLS_VERSION_MAX);
+        SSL_CTX_set_max_proto_version(ssl->ctx, NGX_BORINGSSL_TLS_VERSION_MAX);
     }
 #else
     SSL_CTX_set_max_proto_version(ssl->ctx, 0);
