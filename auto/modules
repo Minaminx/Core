@@ -726,12 +726,14 @@ if [ $HTTP = YES ]; then
         . auto/module
     fi
 
-    if [ $HTTP_SSL_OPENSSL_CHACHA_PREFERRED = YES ]; then
-        have=NGX_HTTP_SSL_OPENSSL_CHACHA_PREFERRED . auto/have
+    if [ $OPENSSL_CHACHA_PREFERRED = YES ]; then
+        have=NGX_OPENSSL_CHACHA_PREFERRED . auto/have
     fi
 
-    if [ ! -n $OPENSSL ]; then
+    if [ ! -n $BORINGSSL ]; then
         have=NGX_BORINGSSL_ON . auto/have
+    else
+        have=NGX_OPENSSL_ON . auto/have
     fi
 
     if [ ! -n $BORINGSSL_TLS_VERSION_MIN ]; then
