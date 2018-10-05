@@ -3296,6 +3296,7 @@ ngx_http_spdy_read_request_body(ngx_http_request_t *r,
         return NGX_HTTP_INTERNAL_SERVER_ERROR;
     }
 
+    /// https://github.com/cloudflare/sslconfig/pull/97
     if (!r->request_body->buf && ngx_http_spdy_init_request_body(r) != NGX_OK) {
         stream->skip_data = NGX_SPDY_DATA_INTERNAL_ERROR;
         return NGX_HTTP_INTERNAL_SERVER_ERROR;
