@@ -65,8 +65,8 @@ HTTP_SSL_BITMASK_TLS13=NO
 OPENSSL_CHACHA_PREFERRED=NO
 
 BORINGSSL=NO
-BORINGSSL_TLS_VERSION_MIN=NO
-BORINGSSL_TLS_VERSION_MAX=NO
+BORINGSSL_TLSVERSION_MIN=NO
+BORINGSSL_TLSVERSION_MAX=NO
 BORINGSSL_OCSPSTAPLING=NO
 BORINGSSL_OCSPSTAPLING_LOG=NO
 
@@ -382,8 +382,8 @@ use the \"--with-mail_ssl_module\" option instead"
         --with-openssl-chacha-preferred) OPENSSL_CHACHA_PREFERRED=YES ;;
 
         --with-boringssl=*)                BORINGSSL=YES OPENSSL="$value"     ;;
-        --with-boringssl-tls-min=*)        BORINGSSL_TLS_VERSION_MIN="$value" ;;
-        --with-boringssl-tls-max=*)        BORINGSSL_TLS_VERSION_MAX="$value" ;;
+        --with-boringssl-tls-min=*)        BORINGSSL_TLSVERSION_MIN="$value"  ;;
+        --with-boringssl-tls-max=*)        BORINGSSL_TLSVERSION_MAX="$value"  ;;
         --with-boringssl-ocspstapling)     BORINGSSL_OCSPSTAPLING=YES         ;;
         --with-boringssl-ocspstapling-log) BORINGSSL_OCSPSTAPLING_LOG=YES     ;;
 

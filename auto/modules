@@ -735,11 +735,11 @@ if [ $HTTP = YES ]; then
     fi
 
     if [ $BORINGSSL = YES ]; then
-        if [ $BORINGSSL_TLS_VERSION_MIN != NO ]; then
-            have=NGX_BORINGSSL_TLS_VERSION_MIN value=$BORINGSSL_TLS_VERSION_MIN . auto/define
+        if [ $BORINGSSL_TLSVERSION_MIN != NO ]; then
+            have=NGX_BORINGSSL_TLSVERSION_MIN value=$BORINGSSL_TLSVERSION_MIN . auto/define
         fi
-        if [ $BORINGSSL_TLS_VERSION_MAX != NO ]; then
-            have=NGX_BORINGSSL_TLS_VERSION_MAX value=$BORINGSSL_TLS_VERSION_MAX . auto/define
+        if [ $BORINGSSL_TLSVERSION_MAX != NO ]; then
+            have=NGX_BORINGSSL_TLSVERSION_MAX value=$BORINGSSL_TLSVERSION_MAX . auto/define
         fi
         if [ $BORINGSSL_OCSPSTAPLING = YES ]; then
             have=NGX_BORINGSSL_OCSPSTAPLING . auto/have
