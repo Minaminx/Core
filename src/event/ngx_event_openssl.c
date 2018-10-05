@@ -355,7 +355,7 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
 
 /// Zero is the default version dedided by boringssl.
 /// --with-boringssl-tls-max=TLS1_3_VERSION
-#ifdef NGX_BORINGSSL_TLSVERSION_MAX
+// #ifdef NGX_BORINGSSL_TLSVERSION_MAX
     if (NGX_BORINGSSL_TLSVERSION_MAX == "TLS1_3_VERSION") {
         #ifdef TLS1_3_VERSION
             SSL_CTX_set_max_proto_version(ssl->ctx, TLS1_3_VERSION);
@@ -366,9 +366,9 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
     } else {
         SSL_CTX_set_max_proto_version(ssl->ctx, NGX_BORINGSSL_TLSVERSION_MAX);
     }
-#else
-    SSL_CTX_set_max_proto_version(ssl->ctx, 0);
-#endif
+// #else
+//     SSL_CTX_set_max_proto_version(ssl->ctx, 0);
+// #endif
 
 /// https://github.com/hakasenyang/nginx-build/commit/3909a37
 /// redefine SSL_OP_NO_RENEGOTIATION
