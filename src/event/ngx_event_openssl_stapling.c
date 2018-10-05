@@ -1874,10 +1874,12 @@ ngx_int_t
 ngx_ssl_stapling(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *file,
     ngx_str_t *responder, ngx_uint_t verify)
 {
-#if (NGX_BORINGSSL_OCSP_STAPLING)
+#if (NGX_BORINGSSL_OCSPSTAPLING)
 
-    ngx_log_error(NGX_LOG_NOTICE, ssl->log, 0,
-                  "with boringssl, only \'ssl_stapling_file\' available.");
+    #if (NGX_BORINGSSL_OCSPSTAPLING_LOG)
+        ngx_log_error(NGX_LOG_NOTICE, ssl->log, 0,
+                      "with boringssl, only \'ssl_stapling_file\' available.");
+    #endif
 
     BIO            *bio;
     int             len;

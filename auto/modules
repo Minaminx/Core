@@ -741,8 +741,11 @@ if [ $HTTP = YES ]; then
         if [ $BORINGSSL_TLS_VERSION_MAX != NO ]; then
             have=NGX_BORINGSSL_TLS_VERSION_MAX value=$BORINGSSL_TLS_VERSION_MAX . auto/define
         fi
-        if [ $BORINGSSL_OCSP_STAPLING = YES ]; then
-            have=NGX_BORINGSSL_OCSP_STAPLING . auto/have
+        if [ $BORINGSSL_OCSPSTAPLING = YES ]; then
+            have=NGX_BORINGSSL_OCSPSTAPLING . auto/have
+        fi
+        if [ $BORINGSSL_OCSPSTAPLING_LOG = YES ]; then
+            have=NGX_BORINGSSL_OCSPSTAPLING_LOG . auto/have
         fi
     else
         if [ $OPENSSL_CHACHA_PREFERRED = YES ]; then
