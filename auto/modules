@@ -730,7 +730,7 @@ if [ $HTTP = YES ]; then
         have=NGX_HTTP_SSL_STRICT_SNI . auto/have
     fi
 
-    if [ $HTTP_SSL_BITMASK_TLS13 = YES ]; then
+    if [ $HTTP_SSL_BITMASK_TLS13 = YES && $BORINGSSL_TLSVERSION_MAX = TLS1_3_VERSION ]; then
         have=NGX_HTTP_SSL_BITMASK_TLS13 . auto/have
     fi
 

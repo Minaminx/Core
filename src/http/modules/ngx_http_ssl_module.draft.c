@@ -1,21 +1,36 @@
-        if (NGX_BORINGSSL_TLSVERSION_MAX == "TLS1_3_VERSION") {
-            ngx_conf_merge_bitmask_value(conf->protocols, prev->protocols,
-                                        (NGX_CONF_BITMASK_SET
-                                        |NGX_SSL_TLSv1_3
-                                        |NGX_SSL_TLSv1_2));
-        } else {
-            #ifndef NGX_BORINGSSL_TLSVERSION_MAX
+#if (NGX_HTTP_SSL_BITMASK_TLS13)
+    #ifdef TLS1_3_VERSION
+        #ifdef NGX_BORINGSSL_TLSVERSION_MAX
+            if (NGX_BORINGSSL_TLSVERSION_MAX == "TLS1_3_VERSION") {
                 ngx_conf_merge_bitmask_value(conf->protocols, prev->protocols,
                                             (NGX_CONF_BITMASK_SET
                                             |NGX_SSL_TLSv1_3
                                             |NGX_SSL_TLSv1_2));
-            #else
-                /// to make an error.
+            } else {
                 ngx_conf_merge_bitmask_value(conf->protocols, prev->protocols,
                                             (NGX_CONF_BITMASK_SET
                                             |NGX_SSL_TLSv1_4));
-            #endif
-        }
+            }
+        #else
+            ngx_conf_merge_bitmask_value(conf->protocols, prev->protocols,
+                                        (NGX_CONF_BITMASK_SET
+                                        |NGX_SSL_TLSv1_3
+                                        |NGX_SSL_TLSv1_2));
+        #endif
+    #else
+        ngx_conf_merge_bitmask_value(conf->protocols, prev->protocols,
+                                    (NGX_CONF_BITMASK_SET
+                                    |NGX_SSL_TLSv1_4));
+    #endif
+#else
+    ngx_conf_merge_bitmask_value(conf->protocols, prev->protocols,
+                                (NGX_CONF_BITMASK_SET
+                                |NGX_SSL_TLSv1_2
+                                |NGX_SSL_TLSv1_1
+                                |NGX_SSL_TLSv1));
+#endif
+
+
 
 
 
