@@ -8,6 +8,7 @@
 #include <ngx_config.h>
 #include <ngx_core.h>
 #include <ngx_event.h>
+#include <ngx_http.h>
 
 
 #define NGX_SSL_PASSWORD_BUFFER_SIZE  4096
