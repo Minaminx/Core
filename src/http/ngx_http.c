@@ -1976,15 +1976,15 @@ ngx_http_types_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
         hash = ngx_hash_strlow(value[i].data, value[i].data, value[i].len);
         value[i].data[value[i].len] = '\0';
 
-        type = (*types)->elts;
-        for (n = 0; n < (*types)->nelts; n++) {
-
-            if (ngx_strcmp(value[i].data, type[n].key.data) == 0) {
-                ngx_conf_log_error(NGX_LOG_WARN, cf, 0,
-                                   "duplicate MIME type \"%V\"", &value[i]);
-                goto next;
-            }
-        }
+        /// remove 'duplicate MIME type' notification.
+        /// type = (*types)->elts;
+        /// for (n = 0; n < (*types)->nelts; n++) {
+        ///     if (ngx_strcmp(value[i].data, type[n].key.data) == 0) {
+        ///         ngx_conf_log_error(NGX_LOG_WARN, cf, 0,
+        ///                            "duplicate MIME type \"%V\"", &value[i]);
+        ///         goto next;
+        ///     }
+        /// }
 
         type = ngx_array_push(*types);
         if (type == NULL) {
