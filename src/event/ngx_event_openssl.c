@@ -1459,6 +1459,16 @@ ngx_ssl_handshake(ngx_connection_t *c)
 
     c->read->error = 1;
 
+#if (NGX_HTTP_SSL_STRICT_SNI)
+    if (clcf->strict_sni) {
+        if (sslerr == SSL_ERROR_SSL) {
+            ERR_peek_error();
+            ERR_clear_error();
+            return NGX_ERROR;
+        }
+    }
+#endif
+
     ngx_ssl_connection_error(c, sslerr, err, "SSL_do_handshake() failed");
 
     return NGX_ERROR;
@@ -1539,6 +1549,17 @@ ngx_ssl_try_early_data(ngx_connection_t *c)
         return NGX_ERROR;
     }
     c->read->error = 1;
+
+#if (NGX_HTTP_SSL_STRICT_SNI)
+    if (clcf->strict_sni) {
+        if (sslerr == SSL_ERROR_SSL) {
+            ERR_peek_error();
+            ERR_clear_error();
+            return NGX_ERROR;
+        }
+    }
+#endif
+
     ngx_ssl_connection_error(c, sslerr, err, "SSL_read_early_data() failed");
     return NGX_ERROR;
 }
