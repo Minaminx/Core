@@ -21,9 +21,6 @@ typedef struct {
 
     ngx_flag_t                      prefer_server_ciphers;
     ngx_flag_t                      early_data;
-#if (NGX_HTTP_SSL_STRICT_SNI)
-    ngx_flag_t                      strict_sni;
-#endif
 
     ngx_uint_t                      protocols;
 

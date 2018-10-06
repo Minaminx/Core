@@ -281,15 +281,6 @@ static ngx_command_t  ngx_http_ssl_commands[] = {
       offsetof(ngx_http_ssl_srv_conf_t, early_data),
       NULL },
 
-#if (NGX_HTTP_SSL_STRICT_SNI)
-    { ngx_string("ssl_strict_sni"),
-      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_CONF_FLAG,
-      ngx_conf_set_flag_slot,
-      NGX_HTTP_SRV_CONF_OFFSET,
-      offsetof(ngx_http_ssl_srv_conf_t, strict_sni),
-      NULL },
-#endif
-
       ngx_null_command
 };
 
@@ -348,12 +339,6 @@ static ngx_http_variable_t  ngx_http_ssl_vars[] = {
     { ngx_string("ssl_early_data"), NULL, ngx_http_ssl_variable,
       (uintptr_t) ngx_ssl_get_early_data,
       NGX_HTTP_VAR_CHANGEABLE|NGX_HTTP_VAR_NOCACHEABLE, 0 },
-
-#if (NGX_HTTP_SSL_STRICT_SNI)
-    { ngx_string("ssl_strict_sni"), NULL, ngx_http_ssl_variable,
-      (uintptr_t) ngx_ssl_get_strict_sni,
-      NGX_HTTP_VAR_CHANGEABLE|NGX_HTTP_VAR_NOCACHEABLE, 0 },
-#endif
 
     { ngx_string("ssl_server_name"), NULL, ngx_http_ssl_variable,
       (uintptr_t) ngx_ssl_get_server_name, NGX_HTTP_VAR_CHANGEABLE, 0 },
@@ -653,9 +638,6 @@ ngx_http_ssl_create_srv_conf(ngx_conf_t *cf)
     sscf->enable = NGX_CONF_UNSET;
     sscf->prefer_server_ciphers = NGX_CONF_UNSET;
     sscf->early_data = NGX_CONF_UNSET;
-#if (NGX_HTTP_SSL_STRICT_SNI)
-    sscf->strict_sni = NGX_CONF_UNSET;
-#endif
 
     sscf->buffer_size = NGX_CONF_UNSET_SIZE;
     sscf->verify = NGX_CONF_UNSET_UINT;
@@ -705,10 +687,6 @@ ngx_http_ssl_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
                          prev->prefer_server_ciphers, 0);
 
     ngx_conf_merge_value(conf->early_data, prev->early_data, 0);
-
-#if (NGX_HTTP_SSL_STRICT_SNI)
-    ngx_conf_merge_value(conf->strict_sni, prev->strict_sni, 0);
-#endif
 
 /// means the default ssl_protocols :
 /// ssl_protocols TLSv1.2 TLSv1.3;
@@ -959,12 +937,6 @@ ngx_http_ssl_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
     if (ngx_ssl_early_data(cf, &conf->ssl, conf->early_data) != NGX_OK) {
     	return NGX_CONF_ERROR;
     }
-
-#if (NGX_HTTP_SSL_STRICT_SNI)
-    if (ngx_ssl_strict_sni(cf, &conf->ssl, conf->strict_sni) != NGX_OK) {
-      return NGX_CONF_ERROR;
-    }
-#endif
 
     if (conf->dyn_rec_enable) {
         conf->ssl.dyn_rec.timeout = conf->dyn_rec_timeout;
