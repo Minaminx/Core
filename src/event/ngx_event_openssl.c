@@ -346,18 +346,12 @@ ngx_ssl_create(ngx_ssl_t *ssl, ngx_uint_t protocols, void *data)
 #endif
 
 /// Zero is the default version dedided by boringssl.
-/// --with-boringssl-tls-min=TLS1_2_VERSION
-#ifdef NGX_BORINGSSL_TLSVERSION_MIN
+/// --with-boringssl-tls-min=TLS1_2_VERSION --with-boringssl-tls-max=TLS1_3_VERSION
+#if (defined NGX_BORINGSSL_TLSVERSION_MIN && defined NGX_BORINGSSL_TLSVERSION_MAX)
     SSL_CTX_set_min_proto_version(ssl->ctx, NGX_BORINGSSL_TLSVERSION_MIN);
-#else
-    SSL_CTX_set_min_proto_version(ssl->ctx, 0);
-#endif
-
-/// Zero is the default version dedided by boringssl.
-/// --with-boringssl-tls-max=TLS1_3_VERSION
-#ifdef NGX_BORINGSSL_TLSVERSION_MAX
     SSL_CTX_set_max_proto_version(ssl->ctx, NGX_BORINGSSL_TLSVERSION_MAX);
 #else
+    SSL_CTX_set_min_proto_version(ssl->ctx, 0);
     SSL_CTX_set_max_proto_version(ssl->ctx, 0);
 #endif
 
