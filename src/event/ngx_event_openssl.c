@@ -8,7 +8,6 @@
 #include <ngx_config.h>
 #include <ngx_core.h>
 #include <ngx_event.h>
-#include <ngx_http.h>
 
 
 #define NGX_SSL_PASSWORD_BUFFER_SIZE  4096
@@ -1461,12 +1460,12 @@ ngx_ssl_handshake(ngx_connection_t *c)
     c->read->error = 1;
 
 #if (NGX_HTTP_SSL_STRICT_SNI)
-    if (clcf->strict_sni) {
-        if (sslerr == SSL_ERROR_SSL) {
-            ERR_peek_error();
-            ERR_clear_error();
-            return NGX_ERROR;
-        }
+    /// if (clcf->strict_sni) {
+    /// temporary: cancel config check
+    if (sslerr == SSL_ERROR_SSL) {
+        ERR_peek_error();
+        ERR_clear_error();
+        return NGX_ERROR;
     }
 #endif
 
@@ -1552,12 +1551,10 @@ ngx_ssl_try_early_data(ngx_connection_t *c)
     c->read->error = 1;
 
 #if (NGX_HTTP_SSL_STRICT_SNI)
-    if (clcf->strict_sni) {
-        if (sslerr == SSL_ERROR_SSL) {
-            ERR_peek_error();
-            ERR_clear_error();
-            return NGX_ERROR;
-        }
+    if (sslerr == SSL_ERROR_SSL) {
+        ERR_peek_error();
+        ERR_clear_error();
+        return NGX_ERROR;
     }
 #endif
 
