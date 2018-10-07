@@ -2513,7 +2513,8 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
         n = ERR_GET_REASON(ERR_peek_error());
 
     #if (NGX_HTTP_SSL_STRICT_SNI)
-        /// openssl
+        /// for openssl
+        /// purpose: https://github.com/hakasenyang/openssl-patch/issues/7#issuecomment-427650946
         #if (defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
             /// https://github.com/hakasenyang/openssl-patch/commit/efa8059
             f = ERR_GET_FUNC(ERR_peek_error());
