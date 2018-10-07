@@ -2612,29 +2612,24 @@ static void
 ngx_ssl_clear_error(ngx_log_t *log)
 {
     while (ERR_peek_error()) {
-        #if (defined SSL_R_UNKNOWN_SSL_VERSION && defined SSL_F_OPENSSL_INTERNAL)
-            if (ERR_GET_REASON(ERR_peek_error()) == SSL_R_UNKNOWN_SSL_VERSION && ERR_GET_FUNC(ERR_peek_error()) == SSL_F_OPENSSL_INTERNAL) {
-                /// SSL: error:100000ea:SSL routines:OPENSSL_internal:UNKNOWN_SSL_VERSION
-                /// ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
+        #if (NGX_HTTP_SSL_STRICTSNI_OPENSSL)
+            #if (defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
+                if (ERR_GET_REASON(ERR_peek_error()) == SSL_R_CALLBACK_FAILED && ERR_GET_FUNC(ERR_peek_error()) == SSL_F_FINAL_SERVER_NAME) {
+                    /// for openssl
+                    /// purpose: https://github.com/hakasenyang/openssl-patch/issues/7#issuecomment-427650946
+                    /// https://github.com/hakasenyang/openssl-patch/commit/efa8059
+                    ngx_ssl_error(NGX_LOG_DEBUG, log, 0, "ignoring stale global SSL error");
+                } else {
+                    ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
+                }
+            #else
                 ngx_ssl_error(NGX_LOG_DEBUG, log, 0, "ignoring stale global SSL error");
-            } else {
-                ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
-            }
+            #endif
         #else
-                /// DEBUG default.
-                ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
+            /// SSL: error:100000ea:SSL routines:OPENSSL_internal:UNKNOWN_SSL_VERSION
+            /// ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
+            ngx_ssl_error(NGX_LOG_DEBUG, log, 0, "ignoring stale global SSL error");
         #endif
-
-        /// #if (NGX_HTTP_SSL_STRICTSNI_OPENSSL)
-        /// #if (defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
-        ///     if (ERR_GET_REASON(ERR_peek_error()) == SSL_R_CALLBACK_FAILED && ERR_GET_FUNC(ERR_peek_error()) == SSL_F_FINAL_SERVER_NAME) {
-        ///         /// for openssl
-        ///         /// purpose: https://github.com/hakasenyang/openssl-patch/issues/7#issuecomment-427650946
-        ///         /// https://github.com/hakasenyang/openssl-patch/commit/efa8059
-        ///         ngx_ssl_error(NGX_LOG_DEBUG, log, 0, "ignoring stale global SSL error");
-        ///     }
-        /// #endif
-        /// #endif
     }
 
     ERR_clear_error();
