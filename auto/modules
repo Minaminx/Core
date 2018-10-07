@@ -726,8 +726,12 @@ if [ $HTTP = YES ]; then
         . auto/module
     fi
 
-    if [ $HTTP_SSL_STRICT_SNI = YES ]; then
-        have=NGX_HTTP_SSL_STRICT_SNI . auto/have
+    if [ $HTTP_SSL_STRICTSNI_ON = YES ]; then
+        have=NGX_HTTP_SSL_STRICTSNI_ON . auto/have
+    fi
+
+    if [ $HTTP_SSL_STRICTSNI_OPENSSL = YES ]; then
+        have=NGX_HTTP_SSL_STRICTSNI_OPENSSL . auto/have
     fi
 
     if [ $HTTP_SSL_BITMASK_TLS13 = YES ]; then

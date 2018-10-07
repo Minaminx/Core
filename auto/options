@@ -59,7 +59,8 @@ HTTP_CHARSET=YES
 HTTP_GZIP=YES
 
 HTTP_SSL=NO
-HTTP_SSL_STRICT_SNI=NO
+HTTP_SSL_STRICTSNI_ON=NO
+HTTP_SSL_STRICTSNI_OPENSSL=NO
 HTTP_SSL_BITMASK_TLS13=NO
 
 OPENSSL_CHACHA_PREFERRED=NO
@@ -239,9 +240,10 @@ $0: warning: the \"--with-ipv6\" option is deprecated"
         --http-uwsgi-temp-path=*)        NGX_HTTP_UWSGI_TEMP_PATH="$value"   ;;
         --http-scgi-temp-path=*)         NGX_HTTP_SCGI_TEMP_PATH="$value"    ;;
 
-        --with-http_ssl_module)          HTTP_SSL=YES               ;;
-        --with-http_ssl_strict_sni)      HTTP_SSL_STRICT_SNI=YES    ;;
-        --with-http_ssl_bitmask_tls13)   HTTP_SSL_BITMASK_TLS13=YES ;;
+        --with-http_ssl_module)            HTTP_SSL=YES                   ;;
+        --with-http_ssl_strictsni_on)      HTTP_SSL_STRICTSNI_ON=YES      ;;
+        --with-http_ssl_strictsni_openssl) HTTP_SSL_STRICTSNI_OPENSSL=YES ;;
+        --with-http_ssl_bitmask_tls13)     HTTP_SSL_BITMASK_TLS13=YES     ;;
 
         --with-http_v2_spdy_module)      HTTP_V2_SPDY=YES           ;;
         --with-http_v2_module)           HTTP_V2=YES                ;;
@@ -468,7 +470,8 @@ cat << END
   --with-file-aio                    enable file AIO support
 
   --with-http_ssl_module             enable ngx_http_ssl_module
-  --with-http_ssl_strict_sni         enable ngx_http_ssl_strict_sni_module
+  --with-http_ssl_strictsni_on       enable ngx_http_ssl_strict_sni_module
+  --with-http_ssl_strictsni_openssl  enable ngx_http_ssl_strictsni_openssl_module
   --with-http_ssl_bitmask_tls13      enable ngx_http_ssl_bitmask_tls13_module
 
   --with-openssl-chacha-preferred    enable ngx_http_ssl_openssl_chacha_preferred_module
