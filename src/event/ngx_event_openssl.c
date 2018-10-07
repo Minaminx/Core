@@ -2633,8 +2633,19 @@ static void
 ngx_ssl_clear_error(ngx_log_t *log)
 {
     while (ERR_peek_error()) {
-        /// ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
-        ngx_ssl_error(NGX_LOG_DEBUG, log, 0, "ignoring stale global SSL error");
+        #if (defined SSL_R_UNKNOWN_SSL_VERSION && defined SSL_F_OPENSSL_INTERNAL)
+            if (ERR_GET_REASON(ERR_peek_error()) == SSL_R_UNKNOWN_SSL_VERSION && ERR_GET_FUNC(ERR_peek_error()) == SSL_F_OPENSSL_INTERNAL) {
+                /// SSL: error:100000ea:SSL routines:OPENSSL_internal:UNKNOWN_SSL_VERSION
+                ngx_ssl_error(NGX_LOG_DEBUG, log, 0, "ignoring stale global SSL error");
+            } else {
+                /// others
+                ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
+            }
+        #else
+            /// DEBUG all
+            /// ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
+            ngx_ssl_error(NGX_LOG_DEBUG, log, 0, "ignoring stale global SSL error");
+        #endif
     }
 
     ERR_clear_error();
@@ -2645,7 +2656,7 @@ static void
 ngx_ssl_clear_strictsni_error(ngx_log_t *log)
 {
     while (ERR_peek_error()) {
-        ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring ssl error at STRICT SNI block");
+        ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring ssl error at STRICT_SNI block");
     }
 
     ERR_clear_error();
