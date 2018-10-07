@@ -2472,7 +2472,9 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
 {
     int         n;
 #if (NGX_HTTP_SSL_STRICT_SNI)
+    #if (defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
     int         f;
+    #endif
 #endif
     ngx_uint_t  level;
 
@@ -2509,17 +2511,17 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
     } else if (sslerr == SSL_ERROR_SSL) {
 
         n = ERR_GET_REASON(ERR_peek_error());
-    #if (NGX_HTTP_SSL_STRICT_SNI)
-        f = ERR_GET_FUNC(ERR_peek_error());
-    #endif
 
-        /// Strict SNI Error Patch
-        /// https://github.com/hakasenyang/openssl-patch/commit/efa8059
     #if (NGX_HTTP_SSL_STRICT_SNI)
-        if (n == SSL_R_CALLBACK_FAILED && f == SSL_F_FINAL_SERVER_NAME) {
-            ngx_ssl_clear_strictsni_error(c->log);
-            return;
-        }
+        /// openssl
+        #if (defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
+            /// https://github.com/hakasenyang/openssl-patch/commit/efa8059
+            f = ERR_GET_FUNC(ERR_peek_error());
+            if (n == SSL_R_CALLBACK_FAILED && f == SSL_F_FINAL_SERVER_NAME) {
+                ngx_ssl_clear_strictsni_error(c->log);
+                return NGX_ERROR;
+            }
+        #endif
     #endif
 
             /* handshake failures */
