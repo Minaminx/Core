@@ -424,7 +424,7 @@ struct ngx_http_core_loc_conf_s {
     ngx_http_complex_value_t  *disable_symlinks_from;
 #endif
 
-#if (NGX_HTTP_SSL_STRICT_SNI)
+#if (HTTP_SSL_STRICTSNI_ON)
     ngx_flag_t   strict_sni;               /* strict_sni */
 #endif
 
