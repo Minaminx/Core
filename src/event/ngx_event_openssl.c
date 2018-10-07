@@ -1463,8 +1463,10 @@ ngx_ssl_handshake(ngx_connection_t *c)
 #if (NGX_HTTP_SSL_STRICT_SNI)
     /// if (clcf->strict_sni) {
     /// temporary: cancel config check
-    ngx_ssl_clear_strictsni_error(c->log);
-    return NGX_ERROR;
+    if (sslerr == SSL_ERROR_SSL) {
+        ngx_ssl_clear_strictsni_error(c->log);
+        return NGX_ERROR;
+    }
 #endif
 
     ngx_ssl_connection_error(c, sslerr, err, "SSL_do_handshake() failed");
@@ -1551,8 +1553,10 @@ ngx_ssl_try_early_data(ngx_connection_t *c)
 #if (NGX_HTTP_SSL_STRICT_SNI)
     /// if (clcf->strict_sni) {
     /// temporary: cancel config check
-    ngx_ssl_clear_strictsni_error(c->log);
-    return NGX_ERROR;
+    if (sslerr == SSL_ERROR_SSL) {
+        ngx_ssl_clear_strictsni_error(c->log);
+        return NGX_ERROR;
+    }
 #endif
 
     ngx_ssl_connection_error(c, sslerr, err, "SSL_read_early_data() failed");
