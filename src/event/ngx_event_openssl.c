@@ -48,7 +48,9 @@ static void ngx_ssl_shutdown_handler(ngx_event_t *ev);
 static void ngx_ssl_connection_error(ngx_connection_t *c, int sslerr,
     ngx_err_t err, char *text);
 static void ngx_ssl_clear_error(ngx_log_t *log);
+#if (NGX_HTTP_SSL_STRICT_SNI)
 static void ngx_ssl_clear_strictsni_error(ngx_log_t *log);
+#endif
 
 static ngx_int_t ngx_ssl_session_id_context(ngx_ssl_t *ssl,
     ngx_str_t *sess_ctx);
@@ -1460,15 +1462,6 @@ ngx_ssl_handshake(ngx_connection_t *c)
 
     c->read->error = 1;
 
-#if (NGX_HTTP_SSL_STRICT_SNI)
-    /// if (clcf->strict_sni) {
-    /// temporary: cancel config check
-    if (sslerr == SSL_ERROR_SSL) {
-        ngx_ssl_clear_strictsni_error(c->log);
-        return NGX_ERROR;
-    }
-#endif
-
     ngx_ssl_connection_error(c, sslerr, err, "SSL_do_handshake() failed");
 
     return NGX_ERROR;
@@ -1549,15 +1542,6 @@ ngx_ssl_try_early_data(ngx_connection_t *c)
         return NGX_ERROR;
     }
     c->read->error = 1;
-
-#if (NGX_HTTP_SSL_STRICT_SNI)
-    /// if (clcf->strict_sni) {
-    /// temporary: cancel config check
-    if (sslerr == SSL_ERROR_SSL) {
-        ngx_ssl_clear_strictsni_error(c->log);
-        return NGX_ERROR;
-    }
-#endif
 
     ngx_ssl_connection_error(c, sslerr, err, "SSL_read_early_data() failed");
     return NGX_ERROR;
@@ -2487,6 +2471,9 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
     char *text)
 {
     int         n;
+#if (NGX_HTTP_SSL_STRICT_SNI)
+    int         f;
+#endif
     ngx_uint_t  level;
 
     level = NGX_LOG_CRIT;
@@ -2522,6 +2509,18 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
     } else if (sslerr == SSL_ERROR_SSL) {
 
         n = ERR_GET_REASON(ERR_peek_error());
+    #if (NGX_HTTP_SSL_STRICT_SNI)
+        f = ERR_GET_FUNC(ERR_peek_error());
+    #endif
+
+        /// Strict SNI Error Patch
+        /// https://github.com/hakasenyang/openssl-patch/commit/efa8059
+    #if (NGX_HTTP_SSL_STRICT_SNI)
+        if (n == SSL_R_CALLBACK_FAILED && f == SSL_F_FINAL_SERVER_NAME) {
+            ngx_ssl_clear_strictsni_error(c->log);
+            return;
+        }
+    #endif
 
             /* handshake failures */
         if (n == SSL_R_BAD_CHANGE_CIPHER_SPEC                        /*  103 */
@@ -2638,15 +2637,17 @@ ngx_ssl_clear_error(ngx_log_t *log)
     ERR_clear_error();
 }
 
+#if (NGX_HTTP_SSL_STRICT_SNI)
 static void
 ngx_ssl_clear_strictsni_error(ngx_log_t *log)
 {
     while (ERR_peek_error()) {
-        ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring STRICT SNI ssl error");
+        ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring ssl error at STRICT SNI block");
     }
 
     ERR_clear_error();
 }
+#endif
 
 void ngx_cdecl
 ngx_ssl_error(ngx_uint_t level, ngx_log_t *log, ngx_err_t err, char *fmt, ...)
