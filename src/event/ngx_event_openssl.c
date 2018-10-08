@@ -2627,8 +2627,8 @@ ngx_ssl_clear_error(ngx_log_t *log)
             #endif
         #else
             /// SSL: error:100000ea:SSL routines:OPENSSL_internal:UNKNOWN_SSL_VERSION
-            /// ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
-            ngx_ssl_error(NGX_LOG_DEBUG, log, 0, "ignoring stale global SSL error");
+            ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
+            /// ngx_ssl_error(NGX_LOG_DEBUG, log, 0, "ignoring stale global SSL error");
         #endif
     }
 
