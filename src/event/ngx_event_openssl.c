@@ -2473,6 +2473,8 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
     int         n;
 #if (NGX_HTTP_SSL_STRICTSNI_OPENSSL && defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
     int         f;
+    #include <ngx_http.h>
+    ngx_http_core_loc_conf_t *clcf;
 #endif
     ngx_uint_t  level;
 
@@ -2511,13 +2513,16 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
         n = ERR_GET_REASON(ERR_peek_error());
 
         #if (NGX_HTTP_SSL_STRICTSNI_OPENSSL && defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
-            f = ERR_GET_FUNC(ERR_peek_error());
-            if (n == SSL_R_CALLBACK_FAILED && f == SSL_F_FINAL_SERVER_NAME) {
-                /// for openssl
-                /// purpose: https://github.com/hakasenyang/openssl-patch/issues/7#issuecomment-427650946
-                /// https://github.com/hakasenyang/openssl-patch/commit/d27fbc0
-                ngx_ssl_clear_strictsni_error(c->log);
-                return;
+            clcf = ngx_http_get_module_loc_conf(r, ngx_http_core_module);
+            if (clcf->strict_sni) {
+                f = ERR_GET_FUNC(ERR_peek_error());
+                if (n == SSL_R_CALLBACK_FAILED && f == SSL_F_FINAL_SERVER_NAME) {
+                    /// for openssl
+                    /// purpose: https://github.com/hakasenyang/openssl-patch/issues/7#issuecomment-427650946
+                    /// https://github.com/hakasenyang/openssl-patch/commit/d27fbc0
+                    ngx_ssl_clear_strictsni_error(c->log);
+                    return;
+                }
             }
         #endif
 
