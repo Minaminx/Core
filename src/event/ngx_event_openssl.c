@@ -2471,11 +2471,11 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
     char *text)
 {
     int         n;
-#if (NGX_HTTP_SSL_STRICTSNI_OPENSSL && defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
+/// #if (NGX_HTTP_SSL_STRICTSNI_OPENSSL && defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
     int         f;
     #include <ngx_http.h>
     ngx_http_core_loc_conf_t *clcf;
-#endif
+/// #endif
     ngx_uint_t  level;
 
     level = NGX_LOG_CRIT;
@@ -2525,6 +2525,11 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
                 }
             }
         #endif
+
+        clcf = ngx_http_get_module_loc_conf(r, ngx_http_core_module);
+        if (clcf->strict_sni) {
+            return;
+        }
 
             /* handshake failures */
         if (n == SSL_R_BAD_CHANGE_CIPHER_SPEC                        /*  103 */
