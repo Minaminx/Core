@@ -2473,7 +2473,7 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
     int         n;
 /// #if (NGX_HTTP_SSL_STRICTSNI_OPENSSL && defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
     int         f;
-    #include ../http/<ngx_http.h>
+    #include <../http/ngx_http.h>
     ngx_http_core_loc_conf_t *clcf;
 /// #endif
     ngx_uint_t  level;
