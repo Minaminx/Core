@@ -48,6 +48,9 @@ static void ngx_ssl_shutdown_handler(ngx_event_t *ev);
 static void ngx_ssl_connection_error(ngx_connection_t *c, int sslerr,
     ngx_err_t err, char *text);
 static void ngx_ssl_clear_error(ngx_log_t *log);
+#if (NGX_HTTP_SSL_STRICTSNI_OPENSSL && defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
+static void ngx_ssl_clear_strictsni_error(ngx_log_t *log);
+#endif
 
 static ngx_int_t ngx_ssl_session_id_context(ngx_ssl_t *ssl,
     ngx_str_t *sess_ctx);
@@ -2468,6 +2471,9 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
     char *text)
 {
     int         n;
+#if (NGX_HTTP_SSL_STRICTSNI_OPENSSL && defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
+    int         f;
+#endif
     ngx_uint_t  level;
 
     level = NGX_LOG_CRIT;
@@ -2503,6 +2509,17 @@ ngx_ssl_connection_error(ngx_connection_t *c, int sslerr, ngx_err_t err,
     } else if (sslerr == SSL_ERROR_SSL) {
 
         n = ERR_GET_REASON(ERR_peek_error());
+
+        #if (NGX_HTTP_SSL_STRICTSNI_OPENSSL && defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
+            f = ERR_GET_FUNC(ERR_peek_error());
+            if (n == SSL_R_CALLBACK_FAILED && f == SSL_F_FINAL_SERVER_NAME) {
+                /// for openssl
+                /// purpose: https://github.com/hakasenyang/openssl-patch/issues/7#issuecomment-427650946
+                /// https://github.com/hakasenyang/openssl-patch/commit/d27fbc0
+                ngx_ssl_clear_strictsni_error(c->log);
+                return;
+            }
+        #endif
 
             /* handshake failures */
         if (n == SSL_R_BAD_CHANGE_CIPHER_SPEC                        /*  103 */
@@ -2612,23 +2629,22 @@ static void
 ngx_ssl_clear_error(ngx_log_t *log)
 {
     while (ERR_peek_error()) {
-        #if (NGX_HTTP_SSL_STRICTSNI_OPENSSL && defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
-            if (ERR_GET_REASON(ERR_peek_error()) == SSL_R_CALLBACK_FAILED && ERR_GET_FUNC(ERR_peek_error()) == SSL_F_FINAL_SERVER_NAME) {
-                /// for openssl
-                /// purpose: https://github.com/hakasenyang/openssl-patch/issues/7#issuecomment-427650946
-                /// https://github.com/hakasenyang/openssl-patch/commit/efa8059
-                ngx_ssl_error(NGX_LOG_DEBUG, log, 0, "ignoring stale global SSL error");
-            } else {
-                ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
-            }
-        #else
-            /// not openssl+strict_sni
-            ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
-        #endif
+        ngx_ssl_error(NGX_LOG_ALERT, log, 0, "ignoring stale global SSL error");
     }
 
     ERR_clear_error();
 }
+
+#if (NGX_HTTP_SSL_STRICTSNI_OPENSSL && defined SSL_R_CALLBACK_FAILED && defined SSL_F_FINAL_SERVER_NAME)
+static void
+ngx_ssl_clear_strictsni_error(ngx_log_t *log)
+{
+    while (ERR_peek_error()) {
+        ngx_ssl_error(NGX_LOG_DEBUG, log, 0, "ignoring ssl error at STRICT SNI block");
+    }
+    ERR_clear_error();
+}
+#endif
 
 void ngx_cdecl
 ngx_ssl_error(ngx_uint_t level, ngx_log_t *log, ngx_err_t err, char *fmt, ...)
