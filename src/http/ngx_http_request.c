@@ -877,6 +877,8 @@ ngx_http_ssl_servername(ngx_ssl_conn_t *ssl_conn, int *ad, void *arg)
 
     servername = SSL_get_servername(ssl_conn, TLSEXT_NAMETYPE_host_name);
 
+    clcf = ngx_http_get_module_loc_conf(hc->conf_ctx, ngx_http_core_module);
+
 #if (NGX_HTTP_SSL_STRICTSNI_ON)
     if (servername == NULL) {
         return (clcf->strict_sni) ? SSL_TLSEXT_ERR_ALERT_FATAL : SSL_TLSEXT_ERR_NOACK;
@@ -937,8 +939,6 @@ ngx_http_ssl_servername(ngx_ssl_conn_t *ssl_conn, int *ad, void *arg)
     *hc->ssl_servername = host;
 
     hc->conf_ctx = cscf->ctx;
-
-    clcf = ngx_http_get_module_loc_conf(hc->conf_ctx, ngx_http_core_module);
 
     ngx_set_connection_log(c, clcf->error_log);
 
