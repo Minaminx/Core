@@ -22,8 +22,8 @@
 #define RELEASE_VER        RELEASE_VAR  "/" RELEASE_VERSION
 
 // Version Update (declared)
-#define declared_version   2003008000
-#define DECLARED_VERSION   "2.3.8.0"
+#define declared_version   2003008001
+#define DECLARED_VERSION   "2.3.8.1"
 #define DECLARED_VER       DECLARED_VAR "/" DECLARED_VERSION
 
 // build version ('nginx -V')
@@ -35,8 +35,8 @@
 #define DECLARED_VER_BUILD DECLARED_VER " (" NGX_BUILD ")"
 #define NGINX_VER_BUILD    NGINX_VER    " (" NGX_BUILD ")"
 #else
-#define DECLARED_VER_BUILD DECLARED_VER " (Diamond Heart)"
-#define NGINX_VER_BUILD    NGINX_VER    " (Diamond Heart)"
+#define DECLARED_VER_BUILD DECLARED_VER " (I'm still here)"
+#define NGINX_VER_BUILD    NGINX_VER    " (I'm still here)"
 #endif
 
 
