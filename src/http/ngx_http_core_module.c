@@ -761,15 +761,6 @@ static ngx_command_t  ngx_http_core_commands[] = {
 
 #endif
 
-#if (NGX_HTTP_SSL_STRICTSNI_ON)
-    { ngx_string("ssl_strict_sni"),
-      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_FLAG,
-      ngx_conf_set_flag_slot,
-      NGX_HTTP_LOC_CONF_OFFSET,
-      offsetof(ngx_http_core_loc_conf_t, strict_sni),
-      NULL },
-#endif
-
       ngx_null_command
 };
 
@@ -3458,10 +3449,6 @@ ngx_http_core_create_loc_conf(ngx_conf_t *cf)
     clcf->disable_symlinks_from = NGX_CONF_UNSET_PTR;
 #endif
 
-#if (NGX_HTTP_SSL_STRICTSNI_ON)
-    clcf->strict_sni = NGX_CONF_UNSET;
-#endif
-
     return clcf;
 }
 
@@ -3756,10 +3743,6 @@ ngx_http_core_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
                               NGX_DISABLE_SYMLINKS_OFF);
     ngx_conf_merge_ptr_value(conf->disable_symlinks_from,
                              prev->disable_symlinks_from, NULL);
-#endif
-
-#if (NGX_HTTP_SSL_STRICTSNI_ON)
-    ngx_conf_merge_value(conf->strict_sni, prev->strict_sni, 0);
 #endif
 
     return NGX_CONF_OK;

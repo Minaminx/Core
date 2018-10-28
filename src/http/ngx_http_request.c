@@ -877,11 +877,11 @@ ngx_http_ssl_servername(ngx_ssl_conn_t *ssl_conn, int *ad, void *arg)
 
     servername = SSL_get_servername(ssl_conn, TLSEXT_NAMETYPE_host_name);
 
-    clcf = ngx_http_get_module_loc_conf(hc->conf_ctx, ngx_http_core_module);
+    sscf = ngx_http_get_module_srv_conf(hc->conf_ctx, ngx_http_ssl_module);
 
 #if (NGX_HTTP_SSL_STRICTSNI_ON)
     if (servername == NULL) {
-        return (clcf->strict_sni) ? SSL_TLSEXT_ERR_ALERT_FATAL : SSL_TLSEXT_ERR_NOACK;
+        return (sscf->strict_sni) ? SSL_TLSEXT_ERR_ALERT_FATAL : SSL_TLSEXT_ERR_NOACK;
     }
 #else
     if (servername == NULL) {
@@ -902,7 +902,7 @@ ngx_http_ssl_servername(ngx_ssl_conn_t *ssl_conn, int *ad, void *arg)
 
 #if (NGX_HTTP_SSL_STRICTSNI_ON)
     if (host.len == 0) {
-        return (clcf->strict_sni) ? SSL_TLSEXT_ERR_ALERT_FATAL : SSL_TLSEXT_ERR_NOACK;
+        return (sscf->strict_sni) ? SSL_TLSEXT_ERR_ALERT_FATAL : SSL_TLSEXT_ERR_NOACK;
     }
 #else
     if (host.len == 0) {
@@ -928,7 +928,7 @@ ngx_http_ssl_servername(ngx_ssl_conn_t *ssl_conn, int *ad, void *arg)
     hc->ssl_servername = ngx_palloc(c->pool, sizeof(ngx_str_t));
 #if (NGX_HTTP_SSL_STRICTSNI_ON)
     if (hc->ssl_servername == NULL) {
-        return (clcf->strict_sni) ? SSL_TLSEXT_ERR_ALERT_FATAL : SSL_TLSEXT_ERR_NOACK;
+        return (sscf->strict_sni) ? SSL_TLSEXT_ERR_ALERT_FATAL : SSL_TLSEXT_ERR_NOACK;
     }
 #else
     if (hc->ssl_servername == NULL) {
@@ -940,9 +940,9 @@ ngx_http_ssl_servername(ngx_ssl_conn_t *ssl_conn, int *ad, void *arg)
 
     hc->conf_ctx = cscf->ctx;
 
-    ngx_set_connection_log(c, clcf->error_log);
+    clcf = ngx_http_get_module_loc_conf(hc->conf_ctx, ngx_http_core_module);
 
-    sscf = ngx_http_get_module_srv_conf(hc->conf_ctx, ngx_http_ssl_module);
+    ngx_set_connection_log(c, clcf->error_log);
 
     c->ssl->buffer_size = sscf->buffer_size;
 
@@ -990,8 +990,8 @@ ngx_http_process_request_line(ngx_event_t *rev)
     ngx_http_request_t  *r;
 
 #if (NGX_HTTP_SSL_STRICTSNI_ON)
-    ngx_http_core_loc_conf_t *clcf;
-    clcf = ngx_http_get_module_loc_conf(r, ngx_http_core_module);
+    ngx_http_ssl_srv_conf_t *sscf;
+    sscf = ngx_http_get_module_srv_conf(r, ngx_http_ssl_module);
 #endif
 
     c = rev->data;
@@ -1113,13 +1113,13 @@ ngx_http_process_request_line(ngx_event_t *rev)
 
             if (rc == NGX_HTTP_PARSE_INVALID_VERSION) {
                 #if (NGX_HTTP_SSL_STRICTSNI_ON)
-                    (r->http_connection->ssl && clcf->strict_sni) ? ngx_http_terminate_request(r, 0) : ngx_http_finalize_request(r, NGX_HTTP_VERSION_NOT_SUPPORTED);
+                    (r->http_connection->ssl && sscf->strict_sni) ? ngx_http_terminate_request(r, 0) : ngx_http_finalize_request(r, NGX_HTTP_VERSION_NOT_SUPPORTED);
                 #else
                     ngx_http_finalize_request(r, NGX_HTTP_VERSION_NOT_SUPPORTED);
                 #endif
             } else {
                 #if (NGX_HTTP_SSL_STRICTSNI_ON)
-                    (r->http_connection->ssl && clcf->strict_sni) ? ngx_http_terminate_request(r, 0) : ngx_http_finalize_request(r, NGX_HTTP_BAD_REQUEST);
+                    (r->http_connection->ssl && sscf->strict_sni) ? ngx_http_terminate_request(r, 0) : ngx_http_finalize_request(r, NGX_HTTP_BAD_REQUEST);
                 #else
                     ngx_http_finalize_request(r, NGX_HTTP_BAD_REQUEST);
                 #endif
@@ -1868,8 +1868,8 @@ ngx_int_t
 ngx_http_process_request_header(ngx_http_request_t *r)
 {
 #if (NGX_HTTP_SSL_STRICTSNI_ON)
-    ngx_http_core_loc_conf_t *clcf;
-    clcf = ngx_http_get_module_loc_conf(r, ngx_http_core_module);
+    ngx_http_ssl_srv_conf_t *sscf;
+    sscf = ngx_http_get_module_srv_conf(r, ngx_http_ssl_module);
 #endif
 
     if (r->headers_in.server.len == 0
@@ -1883,7 +1883,7 @@ ngx_http_process_request_header(ngx_http_request_t *r)
         ngx_log_error(NGX_LOG_INFO, r->connection->log, 0,
                    "client sent HTTP/1.1 request without \"Host\" header");
         #if (NGX_HTTP_SSL_STRICTSNI_ON)
-            (r->http_connection->ssl && clcf->strict_sni) ? ngx_http_terminate_request(r, 0) : ngx_http_finalize_request(r, NGX_HTTP_BAD_REQUEST);
+            (r->http_connection->ssl && sscf->strict_sni) ? ngx_http_terminate_request(r, 0) : ngx_http_finalize_request(r, NGX_HTTP_BAD_REQUEST);
         #else
             ngx_http_finalize_request(r, NGX_HTTP_BAD_REQUEST);
         #endif
