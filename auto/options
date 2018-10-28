@@ -470,7 +470,7 @@ cat << END
   --with-file-aio                    enable file AIO support
 
   --with-http_ssl_module             enable ngx_http_ssl_module
-  --with-http_ssl_strictsni_on       enable ngx_http_ssl_strict_sni_module
+  --with-http_ssl_strictsni_on       enable ngx_http_ssl_strictsni_on_module
   --with-http_ssl_strictsni_openssl  enable ngx_http_ssl_strictsni_openssl_module
   --with-http_ssl_bitmask_tls13      enable ngx_http_ssl_bitmask_tls13_module
 
